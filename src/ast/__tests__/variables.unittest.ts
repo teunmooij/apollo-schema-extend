@@ -1,6 +1,6 @@
-import { gql } from 'apollo-server-express'
+import gql from 'graphql-tag'
 import { Kind } from 'graphql'
-import { isNodeKind } from '../../../../ast'
+import { isNodeKind } from '../typeGuards'
 import { cleanVariables } from '../variables'
 
 describe('ast variables', () => {

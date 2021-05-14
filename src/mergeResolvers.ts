@@ -1,9 +1,8 @@
-import { GraphQLDataSource } from 'apollo-datasource-graphql'
 import { IFieldResolver, IResolvers } from 'apollo-server-express'
 import { GraphQLInterfaceType, GraphQLSchema, GraphQLUnionType } from 'graphql'
 import { mapObjIndexed, mergeDeepLeft } from 'ramda'
 import { createOperation } from './operation/createOperation'
-import { Options, PostOperationFn, RemapRule } from './withExternalSchema.types'
+import { DataSource, Options, PostOperationFn, RemapRule } from './withExternalSchema.types'
 
 export const mergeResolvers = (original: IResolvers, schema: GraphQLSchema, options: Options) => {
   return mergeDeepLeft(original, {
@@ -57,7 +56,7 @@ const createResolver = <TField extends string, TDataSource extends string>(
   dataSourceName: TDataSource,
   postOperation: PostOperationFn = defaultPostOperation,
   remapRules: Partial<Record<string, RemapRule>> = {}
-): IFieldResolver<unknown, { dataSources: Record<TDataSource, GraphQLDataSource<unknown>> }> => async (
+): IFieldResolver<unknown, { dataSources: Record<TDataSource, DataSource<unknown>> }> => async (
   _,
   __,
   context,
