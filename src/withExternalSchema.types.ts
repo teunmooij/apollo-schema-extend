@@ -27,7 +27,7 @@ export type DataSource<TContext> = ApolloDataSource<TContext> & {
 export interface Options<TContext = unknown> {
   dataSource: {
     name: string
-    factory: (dataSources: { [name: string]: DataSource<TContext> }) => DataSource<TContext>
+    factory: (dataSources: { [name: string]: ApolloDataSource<TContext> }) => DataSource<TContext>
   }
   postQuery?: { [field: string]: PostOperationFn<unknown, TContext> }
   postMutation?: { [field: string]: PostOperationFn<unknown, TContext> }
