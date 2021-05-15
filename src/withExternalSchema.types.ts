@@ -20,8 +20,8 @@ export type RemapRule = (
 ) => FieldNode
 
 export type DataSource<TContext> = ApolloDataSource<TContext> & {
-  query: (query: DocumentNode, options?: GraphQLRequest) => Promise<FetchResult>
-  mutation: (mutation: DocumentNode, options?: GraphQLRequest) => Promise<FetchResult>
+  query: (query: DocumentNode, options?: Omit<GraphQLRequest, 'query'>) => Promise<FetchResult>
+  mutation: (mutation: DocumentNode, options?: Omit<GraphQLRequest, 'query'>) => Promise<FetchResult>
 }
 
 export interface Options<TContext = unknown> {

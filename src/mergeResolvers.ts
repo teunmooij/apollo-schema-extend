@@ -66,7 +66,7 @@ const createResolver = <TField extends string, TDataSource extends string>(
     throw 'Operations of type subscription are not yet supported'
   }
 
-  const fetchResult = await context.dataSources[dataSourceName][info.operation.operation]<Record<TField, unknown>>(
+  const fetchResult = await context.dataSources[dataSourceName][info.operation.operation](
     createOperation(info, schema, remapRules),
     {
       variables: info.variableValues,
