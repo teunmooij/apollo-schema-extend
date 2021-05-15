@@ -8,7 +8,7 @@ export const withExternalSchema = (schema: GraphQLSchema, options: Options) => (
   config: ApolloServerExpressConfig
 ): ApolloServerExpressConfig => {
   if (!isSupportedConfig(config)) {
-    throw 'This config is not supported'
+    throw new Error('This config is not supported')
   }
 
   const { dataSource } = options
@@ -34,7 +34,7 @@ const isSupportedConfig = (
 ): config is ApolloServerExpressConfig &
   Required<Pick<ApolloServerExpressConfig, 'dataSources'>> & {
     resolvers: IResolvers
-    typeDefs: Array<DocumentNode>
+    typeDefs: DocumentNode[]
   } => {
   const requiredFieldsProvided = !!config.resolvers && !!config.typeDefs && !!config.dataSources
   return requiredFieldsProvided && !Array.isArray(config.resolvers) && Array.isArray(config.typeDefs)

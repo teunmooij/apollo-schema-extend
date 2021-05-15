@@ -68,7 +68,7 @@ const getFilteredOperation = (
   const currentType = operation.operation === 'query' ? schema.getQueryType() : schema.getMutationType()
 
   if (!currentType) {
-    throw `operation ${operation.operation} is not supported by the schema`
+    throw new Error(`operation ${operation.operation} is not supported by the schema`)
   }
 
   return filterNode(operation, { currentType, schema, fragments, remapRules, resolveInfo })

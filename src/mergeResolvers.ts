@@ -63,7 +63,7 @@ const createResolver = <TField extends string, TDataSource extends string>(
   info
 ) => {
   if (info.operation.operation === 'subscription') {
-    throw 'Operations of type subscription are not yet supported'
+    throw new Error('Operations of type subscription are not yet supported')
   }
 
   const fetchResult = await context.dataSources[dataSourceName][info.operation.operation](
