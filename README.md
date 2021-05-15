@@ -5,6 +5,7 @@ Merges the external schema into the local schema and forwards any (parts of) req
 This library is intended for situations where Apollo Federation doesn't provide sufficient control or is not an option for other reasons.
 
 ## Basic usage:
+
 In this example `myExternalSchema` is a `GraphQLSchema` retrieved by using an `IntrospectionQuery` and `GqlDataSource` is a derived class of `apollo-datasource-graphql`.
 
 ```typescript
@@ -32,3 +33,11 @@ export class GqlDataSource extends GraphQLDataSource<Context> {
   }
 }
 ```
+
+## Restrictions
+
+The current version requires the apollo server config to contain the following fields:
+
+- resolvers: must be `IResolvers<any, any>` (array is not supported)
+- typeDefs: must be `DocumentNode[]`
+- dataSources
