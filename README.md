@@ -1,6 +1,6 @@
-# graphql-ast
+# apollo-schema-extend
 
-Library for extending an Apollo Server Express based graphql server with an external graphql source.
+Extends your Apollo Server Express based graphql server with an external graphql source.
 Merges the external schema into the local schema and forwards any (parts of) request to be resolved by the external source.
 This library is intended for situations where Apollo Federation doesn't provide sufficient control or is not an option for other reasons.
 
