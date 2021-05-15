@@ -1,17 +1,20 @@
 {
-  "name": "graphql-ast",
-  "version": "0.0.1",
+  "name": "apollo-schema-extend",
+  "version": "0.1.0",
   "main": "index.js",
   "files": [
     "lib/**/*"
   ],
   "scripts": {
-    "test": "jest --config jestconfig.json",
+    "test": "jest --config jestconfig.json --watch",
     "build": "tsc",
     "format": "prettier --write \"src/**/*.ts\"",
-    "lint": "tslint -p tsconfig.json"
+    "lint": "tslint -p tsconfig.json",
+    "patch": "yarn version --patch",
+    "minor": "yarn version --minor",
+    "major": "yarn version --major"
   },
-  "repository": "https://github.com/teunmooij/graphql-ast.git",
+  "repository": "https://github.com/teunmooij/apollo-schema-extend.git",
   "author": "Teun Mooij",
   "license": "MIT",
   "devDependencies": {
