@@ -4,7 +4,7 @@ Extends your Apollo Server Express based graphql server with an external graphql
 Merges the external schema into the local schema and forwards any (parts of) request to be resolved by the external source.
 This library is intended for situations where Apollo Federation doesn't provide sufficient control or is not an option for other reasons.
 
-##Basic usage:
+## Basic usage:
 In this example `myExternalSchema` is a `GraphQLSchema` retrieved by using an `IntrospectionQuery` and `GqlDataSource` is a derived class of `apollo-datasource-graphql`.
 
 ```typescript
@@ -15,7 +15,7 @@ const withMyExternalSchema = withExternalSchema(myExternalSchema, {
 const apolloServer = new ApolloServer(withMyExternalSchema(localApolloServerConfig))
 ```
 
-##Recommended data source:
+## Recommended data source:
 
 ```typescript
 import { GraphQLDataSource } from 'apollo-datasource-graphql'
