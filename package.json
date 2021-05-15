@@ -1,7 +1,9 @@
 {
   "name": "apollo-schema-extend",
   "version": "0.1.0",
+  "description": "Extends your Apollo Server Express based graphql server with an external graphql source",
   "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "files": [
     "lib/**/*"
   ],
@@ -16,6 +18,13 @@
   },
   "repository": "https://github.com/teunmooij/apollo-schema-extend.git",
   "author": "Teun Mooij",
+  "keywords": [
+    "Apollo",
+    "GrphQL",
+    "Apollo Server Express",
+    "federation",
+    "schema-stitching"
+  ],
   "license": "MIT",
   "devDependencies": {
     "@types/jest": "^26.0.20",
