@@ -4,7 +4,7 @@ import { mergeResolvers } from './mergeResolvers'
 import { mergeTypeDefs } from './mergeTypeDefs'
 import { Options } from './withExternalSchema.types'
 
-export const withExternalSchema = (schema: GraphQLSchema, options: Options) => (
+export const withExternalSchema  = (schema: GraphQLSchema, options: Options) => (
   config: ApolloServerExpressConfig
 ): ApolloServerExpressConfig => {
   if (!isSupportedConfig(config)) {
