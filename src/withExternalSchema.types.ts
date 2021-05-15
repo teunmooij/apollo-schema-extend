@@ -24,10 +24,10 @@ export type DataSource<TContext> = ApolloDataSource<TContext> & {
   mutation: (mutation: DocumentNode, options?: Omit<GraphQLRequest, 'query'>) => Promise<FetchResult>
 }
 
-export interface Options<TContext = unknown> {
+export interface Options<TContext = any> {
   dataSource: {
     name: string
-    factory: (dataSources: { [name: string]: ApolloDataSource<TContext> }) => DataSource<TContext>
+    factory: (dataSources: { [name: string]: ApolloDataSource }) => DataSource<TContext>
   }
   postQuery?: { [field: string]: PostOperationFn<unknown, TContext> }
   postMutation?: { [field: string]: PostOperationFn<unknown, TContext> }

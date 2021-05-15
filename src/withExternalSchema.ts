@@ -1,10 +1,11 @@
 import { ApolloServerExpressConfig, IResolvers } from 'apollo-server-express'
+import { DataSource } from 'apollo-datasource'
 import { DocumentNode, GraphQLSchema } from 'graphql'
 import { mergeResolvers } from './mergeResolvers'
 import { mergeTypeDefs } from './mergeTypeDefs'
 import { Options } from './withExternalSchema.types'
 
-export const withExternalSchema = (schema: GraphQLSchema, options: Options) => (
+export const withExternalSchema = <TContext = unknown>(schema: GraphQLSchema, options: Options<TContext>) => (
   config: ApolloServerExpressConfig
 ): ApolloServerExpressConfig => {
   if (!isSupportedConfig(config)) {
@@ -17,7 +18,7 @@ export const withExternalSchema = (schema: GraphQLSchema, options: Options) => (
     const sources = config.dataSources()
     return {
       ...sources,
-      [dataSource.name]: dataSource.factory(sources),
+      [dataSource.name]: dataSource.factory(sources) as DataSource<object>,
     }
   }
 
