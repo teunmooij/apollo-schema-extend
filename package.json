@@ -1,6 +1,6 @@
 {
   "name": "apollo-schema-extend",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Extends your Apollo Server Express based graphql server with an external graphql source",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -23,7 +23,7 @@
   "author": "Teun Mooij",
   "keywords": [
     "Apollo",
-    "GrphQL",
+    "GraphQL",
     "Apollo Server Express",
     "federation",
     "schema-stitching"
