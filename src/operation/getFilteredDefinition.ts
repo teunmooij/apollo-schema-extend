@@ -210,7 +210,8 @@ const isFragmentAllowed = (
 
   return (
     currentType.name === fragmentType.name ||
-    (isAbstractType(currentType) && schema.isSubType(currentType, fragmentType))
+    (isAbstractType(currentType) && schema.isSubType(currentType, fragmentType)) ||
+    (isAbstractType(fragmentType) && schema.isSubType(fragmentType, currentType))
   )
 }
 
