@@ -15,7 +15,7 @@
     "patch": "yarn version --patch",
     "minor": "yarn version --minor",
     "major": "yarn version --major",
-    "test:ci": "jest --config jestconfig.json",
+    "test:ci": "jest --config jest.config.js",
     "prepublishOnly": "yarn test:ci & yarn lint",
     "prepare": "yarn build"
   },
