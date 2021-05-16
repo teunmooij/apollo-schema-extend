@@ -88,7 +88,6 @@ const getFilteredFragment = (
   return filterNode(fragment, { currentType, schema, fragments: resolveInfo.fragments, remapRules, resolveInfo })
 }
 
-
 const filterNode = <TNode extends ExecutableDefinitionNode | SelectionNode>(
   node: TNode,
   { currentType, ...context }: Context<GraphQLNamedType>
