@@ -16,6 +16,7 @@ const createName = (name?: string) => (name ? { kind: Kind.NAME, value: name } :
  */
 export const createField = (name: string, alias?: string): FieldNode => ({
   alias: createName(alias),
+  arguments: [],
   directives: [],
   kind: Kind.FIELD,
   name: createName(name)!,
