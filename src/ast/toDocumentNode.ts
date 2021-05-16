@@ -24,7 +24,9 @@ const getUsedFragments = (
   operation: OperationDefinitionNode,
   fragments: Partial<Record<string, FragmentDefinitionNode>>
 ) => {
-  return getUsedFragmentNames(operation, fragments).map(name => fragments[name]!)
+  return getUsedFragmentNames(operation, fragments)
+    .filter((fragmentName, index, self) => self.indexOf(fragmentName) === index)
+    .map(name => fragments[name]!)
 }
 
 const isFragmentSpread = isNodeKind(Kind.FRAGMENT_SPREAD)
