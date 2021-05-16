@@ -23,11 +23,13 @@ export function isNodeKind<TKind extends keyof ASTKindToNode>(kind: TKind, node?
   return node ? node.kind === kind : (n: ASTNode) => n.kind === kind
 }
 
-export const hasArguments = (node: ASTNode): node is FieldNode | DirectiveNode =>
-  !!(node as FieldNode | DirectiveNode).arguments
+export const hasArguments = (node: ASTNode): node is WithRequired<FieldNode | DirectiveNode, 'arguments'> =>
+  !!(node as FieldNode | DirectiveNode).arguments?.length
 
-export const hasDirectives = (node: ASTNode): node is SelectionNode | ExecutableDefinitionNode =>
-  !!(node as SelectionNode | ExecutableDefinitionNode).directives
+export const hasDirectives = (
+  node: ASTNode
+): node is WithRequired<SelectionNode | ExecutableDefinitionNode, 'directives'> =>
+  !!(node as SelectionNode | ExecutableDefinitionNode).directives?.length
 
 export const hasSelectionSet = (
   node: ASTNode

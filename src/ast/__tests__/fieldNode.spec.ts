@@ -1,6 +1,6 @@
 import { Kind } from 'graphql'
 import { clone } from 'ramda'
-import { createField, withSelections } from '../fieldNode'
+import { addSelections, createField, withSelections } from '../fieldNode'
 
 describe('fieldNode tests', () => {
   describe('create field', () => {
@@ -55,7 +55,26 @@ describe('fieldNode tests', () => {
       expect(result.selectionSet?.selections).toBe(selections)
 
       expect(node.selectionSet).toBeUndefined()
-      expect(node).toEqual(copy) //Make sure node has not been altered
+      expect(node).toEqual(copy) // Make sure node has not been altered
+    })
+  })
+
+  describe('add selections', () => {
+    it('should add the fields', () => {
+      // Arrange
+      const originalChild = createField('child1')
+      const node = withSelections(createField('root'), [originalChild])
+      const copy = clone(node)
+      const field1 = createField('field1')
+      const field2 = createField('field2')
+
+      // Act
+      const result = addSelections(node, field1, field2)
+
+      // Assert
+      expect(result.selectionSet!.selections).toHaveLength(3)
+      expect(result.selectionSet!.selections).toEqual([originalChild, field1, field2])
+      expect(node).toEqual(copy) // Make sure node has not been altered
     })
   })
 })

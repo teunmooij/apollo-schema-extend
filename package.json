@@ -31,6 +31,7 @@
   "license": "MIT",
   "devDependencies": {
     "@types/jest": "^26.0.20",
+    "@types/ramda": "^0.27.40",
     "apollo-server-express": "^2.24.0",
     "graphql": "^15.5.0",
     "graphql-tag": "^2.11.0",
@@ -46,7 +47,6 @@
     "graphql": "^15.5.0"
   },
   "dependencies": {
-    "@types/ramda": "^0.27.40",
     "ramda": "^0.27.1"
   }
 }
