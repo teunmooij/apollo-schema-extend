@@ -34,6 +34,20 @@ export class GqlDataSource extends GraphQLDataSource<Context> {
 }
 ```
 
+## Installation
+
+Using npm:
+
+```bash
+$ npm install apollo-schema-extend
+```
+
+Using yarn:
+
+```bash
+$ yarn add apollo-schema-extend
+```
+
 ## Restrictions
 
 The current version requires the apollo server config to contain the following fields:

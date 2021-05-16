@@ -16,9 +16,9 @@ const getVariableName = (argumentNode: ArgumentNode) =>
   argumentNode.value.kind === Kind.VARIABLE ? argumentNode.value.name.value : null
 
 export const getArgumentVariables = <TNode extends DefinitionNode | SelectionNode | DirectiveNode>(node: TNode) => {
-  const variables = hasArguments(node) ? node.arguments!.map(getVariableName).filter<string>(isNotNull) : []
+  const variables = hasArguments(node) ? node.arguments.map(getVariableName).filter<string>(isNotNull) : []
   if (hasDirectives(node)) {
-    variables.push(...node.directives!.flatMap(getArgumentVariables).filter(arg => !variables.includes(arg)))
+    variables.push(...node.directives.flatMap(getArgumentVariables).filter(arg => !variables.includes(arg)))
   }
 
   if (hasSelectionSet(node)) {

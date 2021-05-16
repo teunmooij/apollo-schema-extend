@@ -25,7 +25,7 @@ const getUsedFragments = (
   fragments: Partial<Record<string, FragmentDefinitionNode>>
 ) => {
   return getUsedFragmentNames(operation, fragments)
-    .filter((fragmentName, index, self) => self.indexOf(fragmentName) === index)
+    .filter((fragmentName, index, self) => self.indexOf(fragmentName) === index && fragmentName in fragments)
     .map(name => fragments[name]!)
 }
 
