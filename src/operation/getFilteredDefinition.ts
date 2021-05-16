@@ -88,7 +88,7 @@ const getFilteredFragment = (
   return filterNode(fragment, { currentType, schema, fragments: resolveInfo.fragments, remapRules, resolveInfo })
 }
 
-// todo v2: filter arguments and directives,
+
 const filterNode = <TNode extends ExecutableDefinitionNode | SelectionNode>(
   node: TNode,
   { currentType, ...context }: Context<GraphQLNamedType>
