@@ -1,7 +1,8 @@
 import { buildASTSchema, DocumentNode, FieldNode, FragmentDefinitionNode, GraphQLResolveInfo, Kind } from 'graphql'
 import gql from 'graphql-tag'
 import { clone } from 'ramda'
-import { createField, DocumentDefinition, isFieldNode, isNodeKind } from '../../ast'
+import { addSelections, createField, DocumentDefinition, isFieldNode, isNodeKind } from '../../ast'
+import { RemapRule } from '../../withExternalSchema.types'
 
 import { getFilteredDefinition } from '../getFilteredDefinition'
 
@@ -279,11 +280,11 @@ describe('getFilteredDefinition tests', () => {
   it('should throw error if operation is not in schema', () => {
     // Arrange
     const mutation = gql`
-    mutation addBookMutation($book: BookInput!){
-      addBook(book: $book) {
-        id
+      mutation addBookMutation($book: BookInput!) {
+        addBook(book: $book) {
+          id
+        }
       }
-    }
     `
 
     const { operation, fragments } = toDocumentDefinition(mutation)
@@ -296,5 +297,38 @@ describe('getFilteredDefinition tests', () => {
 
     // Assert
     expect(action).toThrow('operation mutation is not supported by the schema')
+  })
+
+  it('should perform remap rule on filtered node', () => {
+    // Arrange
+    const query = gql`
+      query myQuery($id: ID!) {
+        author(id: $id) {
+          id
+          name
+          awards
+        }
+      }
+    `
+
+    const { operation, fragments } = toDocumentDefinition(query)
+    const resolveInfo = { fragments } as GraphQLResolveInfo
+    const remapRules = { Author: node => addSelections(node, createField('bio')) } as Record<string, RemapRule>
+
+    // Act
+    const result = getFilteredDefinition(operation, resolveInfo, schema, remapRules)
+
+    // Assert
+    const expected = gql`
+      query myQuery($id: ID!) {
+        author(id: $id) {
+          id
+          name
+          bio
+        }
+      }
+    `
+
+    expect(result).toEqual(toDocumentDefinition(expected))
   })
 })
