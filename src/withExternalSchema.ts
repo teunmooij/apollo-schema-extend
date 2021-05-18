@@ -38,5 +38,5 @@ const isSupportedConfig = (
     typeDefs: DocumentNode[]
   } => {
   const requiredFieldsProvided = !!config.resolvers && !!config.typeDefs && !!config.dataSources
-  return requiredFieldsProvided && !Array.isArray(config.resolvers) && Array.isArray(config.typeDefs)
+  return requiredFieldsProvided && !Array.isArray(config.resolvers)
 }
