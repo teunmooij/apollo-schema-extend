@@ -53,5 +53,5 @@ $ yarn add apollo-schema-extend
 The current version requires the apollo server config to contain the following fields:
 
 - resolvers: must be `IResolvers<any, any>` (array is not supported)
-- typeDefs: must be `DocumentNode[]`
+- typeDefs
 - dataSources
