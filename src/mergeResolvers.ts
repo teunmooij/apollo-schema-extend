@@ -1,53 +1,61 @@
-import { IFieldResolver, IResolvers } from 'apollo-server-express'
+import { ApolloError, IFieldResolver, IResolvers } from 'apollo-server-express'
 import { GraphQLInterfaceType, GraphQLSchema, GraphQLUnionType } from 'graphql'
-import { mapObjIndexed, mergeDeepLeft } from 'ramda'
+import { mapObjIndexed, mergeDeepLeft, objOf } from 'ramda'
 import { createOperation } from './operation/createOperation'
 import { DataSource, Options, PostOperationFn, RemapRule } from './withExternalSchema.types'
 
-export const mergeResolvers = (original: IResolvers, schema: GraphQLSchema, options: Options) => {
+export const mergeResolvers = (original: IResolvers, schema: GraphQLSchema, options: Options): IResolvers => {
   return mergeDeepLeft(original, {
-    Query: getQueryResolvers(schema, options),
-    Mutation: getMutationResolvers(schema, options),
+    ...getQueryResolvers(schema, options),
+    ...getMutationResolvers(schema, options),
     ...getTypeResolvers(schema),
   })
 }
 
 const getQueryResolvers = (schema: GraphQLSchema, options: Options) => {
-  const queryFields = schema.getQueryType()?.getFields() ?? {}
-  return mapObjIndexed(
-    (_, field) =>
-      createResolver(
-        schema,
-        field,
-        options.dataSource.name,
-        (options.postQuery && options.postQuery[field]) || options.defaultPostQuery,
-        options.remapRules
-      ),
-    queryFields
-  )
+  const queryFields = schema.getQueryType()?.getFields()
+  return queryFields
+    ? {
+        Query: mapObjIndexed(
+          (_, field) =>
+            createResolver(
+              schema,
+              field,
+              options.dataSource.name,
+              (options.postQuery && options.postQuery[field]) || options.defaultPostQuery,
+              options.remapRules
+            ),
+          queryFields
+        ),
+      }
+    : {}
 }
 
 const getMutationResolvers = (schema: GraphQLSchema, options: Options) => {
-  const mutationFields = schema.getMutationType()?.getFields() ?? {}
-  return mapObjIndexed(
-    (_, field) =>
-      createResolver(
-        schema,
-        field,
-        options.dataSource.name,
-        (options.postMutation && options.postMutation[field]) || options.defaultPostMutation,
-        options.remapRules
-      ),
-    mutationFields
-  )
+  const mutationFields = schema.getMutationType()?.getFields()
+  return mutationFields
+    ? {
+        Mutation: mapObjIndexed(
+          (_, field) =>
+            createResolver(
+              schema,
+              field,
+              options.dataSource.name,
+              (options.postMutation && options.postMutation[field]) || options.defaultPostMutation,
+              options.remapRules
+            ),
+          mutationFields
+        ),
+      }
+    : {}
 }
 
-const defaultPostOperation: PostOperationFn = (fetchResult, { field }) => {
-  if (fetchResult.errors || !fetchResult.data) {
-    throw new Error(`Something went wrong while getting data for ${field}`)
+const defaultPostOperation: PostOperationFn = ({ errors, data }, { field }) => {
+  if (errors || !data) {
+    throw new ApolloError(`Cannot resolve field ${field}.`, undefined, { errors })
   }
 
-  return fetchResult.data[field]
+  return data[field]
 }
 
 const createResolver = <TField extends string, TDataSource extends string>(

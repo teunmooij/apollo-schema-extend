@@ -1,4 +1,4 @@
-import { Kind, print } from 'graphql'
+import { Kind } from 'graphql'
 import gql from 'graphql-tag'
 import { clone } from 'ramda'
 import { isNodeKind, createField, isFieldNode } from '../../ast'

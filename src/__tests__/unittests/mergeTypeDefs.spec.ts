@@ -1,7 +1,7 @@
 import { buildASTSchema, print } from 'graphql'
 import gql from 'graphql-tag'
 
-import { mergeTypeDefs } from '../mergeTypeDefs'
+import { mergeTypeDefs } from '../../mergeTypeDefs'
 
 describe('mergeTypeDefs tests', () => {
   it('should merge the schemas', () => {
