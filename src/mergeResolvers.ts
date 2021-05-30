@@ -1,4 +1,4 @@
-import { IFieldResolver, IResolvers } from 'apollo-server-express'
+import { ApolloError, IFieldResolver, IResolvers } from 'apollo-server-express'
 import { GraphQLInterfaceType, GraphQLSchema, GraphQLUnionType } from 'graphql'
 import { mapObjIndexed, mergeDeepLeft, objOf } from 'ramda'
 import { createOperation } from './operation/createOperation'
@@ -50,12 +50,12 @@ const getMutationResolvers = (schema: GraphQLSchema, options: Options) => {
     : {}
 }
 
-const defaultPostOperation: PostOperationFn = (fetchResult, { field }) => {
-  if (fetchResult.errors || !fetchResult.data) {
-    throw new Error(`Something went wrong while getting data for ${field}`)
+const defaultPostOperation: PostOperationFn = ({ errors, data }, { field }) => {
+  if (errors || !data) {
+    throw new ApolloError(`Cannot resolve field ${field}.`, undefined, { errors })
   }
 
-  return fetchResult.data[field]
+  return data[field]
 }
 
 const createResolver = <TField extends string, TDataSource extends string>(
