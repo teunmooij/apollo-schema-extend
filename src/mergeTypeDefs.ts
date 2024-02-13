@@ -1,4 +1,4 @@
-import { mergeSchemas } from 'apollo-server-express'
+import { mergeTypeDefs as graphqlToolsMergeTypeDefs } from '@graphql-tools/merge'
 import { DocumentNode, GraphQLSchema, Kind, parse, printSchema } from 'graphql'
 
 export const mergeTypeDefs = (
@@ -6,8 +6,7 @@ export const mergeTypeDefs = (
   external: GraphQLSchema
 ) => {
   const internal = Array.isArray(original) ? original : [original]
-  const mergedSchema = mergeSchemas({ schemas: [...internal, external] })
-  const mergedTypeDefs = parse(printSchema(mergedSchema))
+  const mergedTypeDefs = graphqlToolsMergeTypeDefs([...internal, external])
   return withoutApolloTypes(mergedTypeDefs)
 }
 

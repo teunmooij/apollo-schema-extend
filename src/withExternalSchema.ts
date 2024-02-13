@@ -1,34 +1,35 @@
-import { ApolloServerExpressConfig, IResolvers } from 'apollo-server-express'
+import { ApolloServerExpressConfig } from 'apollo-server-express'
 import { DataSource } from 'apollo-datasource'
 import { DocumentNode, GraphQLSchema } from 'graphql'
 import { mergeResolvers } from './mergeResolvers'
 import { mergeTypeDefs } from './mergeTypeDefs'
 import { Options } from './withExternalSchema.types'
+import { IResolvers } from '@graphql-tools/utils'
 
-export const withExternalSchema = <TContext = unknown>(schema: GraphQLSchema, options: Options<TContext>) => (
-  config: ApolloServerExpressConfig
-): ApolloServerExpressConfig => {
-  if (!isSupportedConfig(config)) {
-    throw new Error('This config is not supported')
-  }
+export const withExternalSchema =
+  <TContext = unknown>(schema: GraphQLSchema, options: Options<TContext>) =>
+  (config: ApolloServerExpressConfig): ApolloServerExpressConfig => {
+    if (!isSupportedConfig(config)) {
+      throw new Error('This config is not supported')
+    }
 
-  const { dataSource } = options
+    const { dataSource } = options
 
-  const dataSources = () => {
-    const sources = config.dataSources()
+    const dataSources = () => {
+      const sources = config.dataSources()
+      return {
+        ...sources,
+        [dataSource.name]: dataSource.factory(sources) as DataSource<object>,
+      }
+    }
+
     return {
-      ...sources,
-      [dataSource.name]: dataSource.factory(sources) as DataSource<object>,
+      ...config,
+      typeDefs: mergeTypeDefs(config.typeDefs, schema),
+      resolvers: mergeResolvers(config.resolvers, schema, options),
+      dataSources,
     }
   }
-
-  return {
-    ...config,
-    typeDefs: mergeTypeDefs(config.typeDefs, schema),
-    resolvers: mergeResolvers(config.resolvers, schema, options),
-    dataSources,
-  }
-}
 
 const isSupportedConfig = (
   config: ApolloServerExpressConfig

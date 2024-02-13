@@ -38,11 +38,11 @@ describe('createOperation tests', () => {
       }
     `
 
-    const info = ({
+    const info = {
       operation: query.definitions.find(isNodeKind(Kind.OPERATION_DEFINITION))!,
       fieldNodes: [createField(resolverField)],
       fragments: {},
-    } as unknown) as GraphQLResolveInfo
+    } as unknown as GraphQLResolveInfo
 
     // Act
     const result = createOperation(info, schema, {})
@@ -73,11 +73,11 @@ describe('createOperation tests', () => {
       }
     `
 
-    const info = ({
+    const info = {
       operation: mutation.definitions.find(isNodeKind(Kind.OPERATION_DEFINITION))!,
       fieldNodes: [createField(resolverField)],
       fragments: {},
-    } as unknown) as GraphQLResolveInfo
+    } as unknown as GraphQLResolveInfo
 
     // Act
     const result = createOperation(info, schema, {})

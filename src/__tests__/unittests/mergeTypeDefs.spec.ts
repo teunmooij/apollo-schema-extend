@@ -28,6 +28,8 @@ describe('mergeTypeDefs tests', () => {
     // Act
     const result = mergeTypeDefs(original, external)
 
+    console.log(print(result))
+
     // Assert
     const expected = gql`
       type Query {
@@ -36,6 +38,9 @@ describe('mergeTypeDefs tests', () => {
       }
       type Greeting {
         value: String
+      }
+      schema {
+        query: Query
       }
     `
 
@@ -70,6 +75,9 @@ describe('mergeTypeDefs tests', () => {
       }
       type Greeting {
         value: String
+      }
+      schema {
+        query: Query
       }
     `
 

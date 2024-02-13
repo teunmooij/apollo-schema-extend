@@ -36,11 +36,13 @@ const getUsedFragmentNames = (
   fragments: Partial<Record<string, FragmentDefinitionNode>>
 ): string[] => {
   return (
-    node.selectionSet?.selections.flatMap(selection =>
-      isFragmentSpread(selection)
-        ? [selection.name.value, ...getUsedFragmentNamesFromFragment(selection.name.value, fragments)]
-        : getUsedFragmentNames(selection, fragments)
-    ) ?? []
+    node.selectionSet?.selections
+      .map(selection =>
+        isFragmentSpread(selection)
+          ? [selection.name.value, ...getUsedFragmentNamesFromFragment(selection.name.value, fragments)]
+          : getUsedFragmentNames(selection, fragments)
+      )
+      .flat() ?? []
   )
 }
 

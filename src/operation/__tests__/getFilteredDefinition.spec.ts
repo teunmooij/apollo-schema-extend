@@ -1,7 +1,7 @@
-import { buildASTSchema, DocumentNode, FieldNode, FragmentDefinitionNode, GraphQLResolveInfo, Kind } from 'graphql'
+import { buildASTSchema, DocumentNode, FragmentDefinitionNode, GraphQLResolveInfo, Kind } from 'graphql'
 import gql from 'graphql-tag'
 import { clone } from 'ramda'
-import { addSelections, createField, DocumentDefinition, isFieldNode, isNodeKind } from '../../ast'
+import { addSelections, createField, DocumentDefinition, isNodeKind } from '../../ast'
 import { RemapRule } from '../../withExternalSchema.types'
 
 import { getFilteredDefinition } from '../getFilteredDefinition'
@@ -48,10 +48,13 @@ describe('getFilteredDefinition tests', () => {
 
   const toDocumentDefinition = (document: DocumentNode): DocumentDefinition => ({
     operation: document.definitions.find(isNodeKind(Kind.OPERATION_DEFINITION))!,
-    fragments: document.definitions.filter(isNodeKind(Kind.FRAGMENT_DEFINITION)).reduce((total, next) => {
-      total[next.name.value] = next
-      return total
-    }, {} as Partial<Record<string, FragmentDefinitionNode>>),
+    fragments: document.definitions.filter(isNodeKind(Kind.FRAGMENT_DEFINITION)).reduce(
+      (total, next) => {
+        total[next.name.value] = next
+        return total
+      },
+      {} as Partial<Record<string, FragmentDefinitionNode>>
+    ),
   })
 
   it('should remove fields that are not in the schema', () => {

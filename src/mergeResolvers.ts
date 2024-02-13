@@ -1,8 +1,9 @@
-import { ApolloError, IFieldResolver, IResolvers } from 'apollo-server-express'
+import { ApolloError } from 'apollo-server-express'
 import { GraphQLInterfaceType, GraphQLSchema, GraphQLUnionType } from 'graphql'
 import { mapObjIndexed, mergeDeepLeft, objOf } from 'ramda'
 import { createOperation } from './operation/createOperation'
 import { DataSource, Options, PostOperationFn, RemapRule } from './withExternalSchema.types'
+import { IFieldResolver, IResolvers } from '@graphql-tools/utils'
 
 export const mergeResolvers = (original: IResolvers, schema: GraphQLSchema, options: Options): IResolvers => {
   return mergeDeepLeft(original, {
@@ -58,43 +59,43 @@ const defaultPostOperation: PostOperationFn = ({ errors, data }, { field }) => {
   return data[field]
 }
 
-const createResolver = <TField extends string, TDataSource extends string>(
-  schema: GraphQLSchema,
-  field: TField,
-  dataSourceName: TDataSource,
-  postOperation: PostOperationFn = defaultPostOperation,
-  remapRules: Partial<Record<string, RemapRule>> = {}
-): IFieldResolver<unknown, { dataSources: Record<TDataSource, DataSource<unknown>> }> => async (
-  _,
-  __,
-  context,
-  info
-) => {
-  if (info.operation.operation === 'subscription') {
-    throw new Error('Operations of type subscription are not yet supported')
-  }
-
-  const fetchResult = await context.dataSources[dataSourceName][info.operation.operation](
-    createOperation(info, schema, remapRules),
-    {
-      variables: info.variableValues,
+const createResolver =
+  <TField extends string, TDataSource extends string>(
+    schema: GraphQLSchema,
+    field: TField,
+    dataSourceName: TDataSource,
+    postOperation: PostOperationFn = defaultPostOperation,
+    remapRules: Partial<Record<string, RemapRule>> = {}
+  ): IFieldResolver<unknown, { dataSources: Record<TDataSource, DataSource<unknown>> }> =>
+  async (_, __, context, info) => {
+    if (info.operation.operation === 'subscription') {
+      throw new Error('Operations of type subscription are not yet supported')
     }
-  )
 
-  return postOperation(fetchResult, { context, info, field })
-}
+    const fetchResult = await context.dataSources[dataSourceName][info.operation.operation](
+      createOperation(info, schema, remapRules),
+      {
+        variables: info.variableValues,
+      }
+    )
+
+    return postOperation(fetchResult, { context, info, field })
+  }
 
 const getTypeResolvers = (schema: GraphQLSchema) => {
   const typeMap = schema.getTypeMap()
   const typeResolvers = Object.entries(typeMap)
     .filter(entry => entry[1] instanceof GraphQLInterfaceType || entry[1] instanceof GraphQLUnionType)
-    .reduce((total, next) => {
-      total[next[0]] = {
-        __resolveType(entity) {
-          return entity.__typename
-        },
-      }
-      return total
-    }, {} as Record<string, { __resolveType: (entity: { __typename: string }) => string }>)
+    .reduce(
+      (total, next) => {
+        total[next[0]] = {
+          __resolveType(entity) {
+            return entity.__typename
+          },
+        }
+        return total
+      },
+      {} as Record<string, { __resolveType: (entity: { __typename: string }) => string }>
+    )
   return typeResolvers
 }

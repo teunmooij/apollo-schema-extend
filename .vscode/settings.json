@@ -1,3 +1,4 @@
 {
-  "jest.jestCommandLine": "node_modules\\.bin\\jest --config jest.config.json"
+  "jest.jestCommandLine": "node_modules\\.bin\\jest --config jest.config.json",
+  "jest.runMode": "on-demand"
 }
