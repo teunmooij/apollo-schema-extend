@@ -1,7 +1,7 @@
 import gql from 'graphql-tag'
 import { getMovieHouseServer } from './mockservers/internal/movieHouse'
 import { Movie } from './mockservers/model'
-import { createClient } from './mockservers/createMockClient'
+import { createTestClient } from './mockservers/createMockClient'
 
 describe('basic withExternalSchema mocktests', () => {
   it('should resolve an external query', async () => {
@@ -16,7 +16,7 @@ describe('basic withExternalSchema mocktests', () => {
     `
 
     const server = await getMovieHouseServer()
-    const client = createClient(server)
+    const client = createTestClient(server)
 
     // Act
     const response = await client.query({ query })
@@ -41,7 +41,7 @@ describe('basic withExternalSchema mocktests', () => {
     `
 
     const server = await getMovieHouseServer()
-    const client = createClient(server)
+    const client = createTestClient(server)
 
     // Act
     const response = await client.query({ query })

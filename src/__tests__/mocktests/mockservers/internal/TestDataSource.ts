@@ -1,12 +1,12 @@
 import { DataSource as ApolloDataSource } from 'apollo-datasource'
 import { FetchResult, GraphQLRequest } from 'apollo-link'
 import { DocumentNode } from 'graphql'
-import { Client } from '../createMockClient'
+import { TestClient } from '../createMockClient'
 
 export class TestDataSource extends ApolloDataSource {
-  private client: Client
+  private client: TestClient
 
-  public constructor(client: Client) {
+  public constructor(client: TestClient) {
     super()
     this.client = client
   }

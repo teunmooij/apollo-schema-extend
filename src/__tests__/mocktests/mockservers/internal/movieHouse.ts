@@ -7,10 +7,10 @@ import { TestDataSource } from './TestDataSource'
 
 import { typeDefs } from './typeDefs'
 import { resolvers } from './resolvers'
-import { createClient } from '../createMockClient'
+import { createTestClient } from '../createMockClient'
 
 export const getMovieHouseServer = async () => {
-  const movieDatabaseClient = createClient(movieDatabase)
+  const movieDatabaseClient = createTestClient(movieDatabase)
   const introspectionResult = await movieDatabaseClient.query({
     query: getIntrospectionQuery(),
   })
