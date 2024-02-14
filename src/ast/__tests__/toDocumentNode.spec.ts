@@ -36,10 +36,13 @@ describe('toDocumentNode tests', () => {
       }
     `
     const operation = original.definitions.find(isNodeKind(Kind.OPERATION_DEFINITION))!
-    const fragments = original.definitions.filter(isNodeKind(Kind.FRAGMENT_DEFINITION)).reduce((total, next) => {
-      total[next.name.value] = next
-      return total
-    }, {} as Record<string, FragmentDefinitionNode>)
+    const fragments = original.definitions.filter(isNodeKind(Kind.FRAGMENT_DEFINITION)).reduce(
+      (total, next) => {
+        total[next.name.value] = next
+        return total
+      },
+      {} as Record<string, FragmentDefinitionNode>
+    )
 
     // Act
     const result = toDocumentNode({ operation, fragments })
@@ -64,10 +67,13 @@ describe('toDocumentNode tests', () => {
       }
     `
     const operation = original.definitions.find(isNodeKind(Kind.OPERATION_DEFINITION))!
-    const fragments = original.definitions.filter(isNodeKind(Kind.FRAGMENT_DEFINITION)).reduce((total, next) => {
-      total[next.name.value] = next
-      return total
-    }, {} as Record<string, FragmentDefinitionNode>)
+    const fragments = original.definitions.filter(isNodeKind(Kind.FRAGMENT_DEFINITION)).reduce(
+      (total, next) => {
+        total[next.name.value] = next
+        return total
+      },
+      {} as Record<string, FragmentDefinitionNode>
+    )
 
     // Act
     const result = toDocumentNode({ operation, fragments })

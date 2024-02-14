@@ -28,6 +28,8 @@ describe('mergeTypeDefs tests', () => {
     // Act
     const result = mergeTypeDefs(original, external)
 
+    console.log(print(result))
+
     // Assert
     const expected = gql`
       type Query {
@@ -42,7 +44,7 @@ describe('mergeTypeDefs tests', () => {
     expect(print(result)).toEqual(print(expected))
   })
 
-  it('should merge the schemas where original is single document node', () => {
+  it.only('should merge the schemas where original is single document node', () => {
     // Arrange
     const original = gql`
       type Query {

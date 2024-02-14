@@ -1,7 +1,7 @@
-import { createTestClient } from 'apollo-server-testing'
 import gql from 'graphql-tag'
 import { getMovieHouseServer } from './mockservers/internal/movieHouse'
 import { Movie } from './mockservers/model'
+import { createTestClient } from './mockservers/createMockClient'
 
 describe('basic withExternalSchema mocktests', () => {
   it('should resolve an external query', async () => {
@@ -24,7 +24,7 @@ describe('basic withExternalSchema mocktests', () => {
     // Assert
     expect(response.errors).toBeUndefined()
     expect(response.data?.movies).toBeDefined()
-    const movies: Movie[] = response.data.movies!
+    const movies: Movie[] = response.data?.movies
     expect(movies).toHaveLength(2)
   })
 

@@ -1,13 +1,12 @@
-import { mergeSchemas } from 'apollo-server-express'
-import { DocumentNode, GraphQLSchema, Kind, parse, printSchema } from 'graphql'
+import { mergeTypeDefs as graphqlToolsMergeTypeDefs } from '@graphql-tools/merge'
+import { DocumentNode, GraphQLSchema, Kind } from 'graphql'
 
 export const mergeTypeDefs = (
   original: string | DocumentNode | readonly (string | DocumentNode)[],
   external: GraphQLSchema
 ) => {
   const internal = Array.isArray(original) ? original : [original]
-  const mergedSchema = mergeSchemas({ schemas: [...internal, external] })
-  const mergedTypeDefs = parse(printSchema(mergedSchema))
+  const mergedTypeDefs = graphqlToolsMergeTypeDefs([...internal, external])
   return withoutApolloTypes(mergedTypeDefs)
 }
 
@@ -19,6 +18,11 @@ const apolloTypes = [
 const withoutApolloTypes = (typeDefs: DocumentNode): DocumentNode => ({
   ...typeDefs,
   definitions: typeDefs.definitions.filter(
-    definition => !apolloTypes.some(type => definition.kind === type.kind && definition.name.value === type.name)
+    definition =>
+      !apolloTypes.some(
+        type =>
+          definition.kind === Kind.SCHEMA_DEFINITION ||
+          (definition.kind === type.kind && definition.name.value === type.name)
+      )
   ),
 })
