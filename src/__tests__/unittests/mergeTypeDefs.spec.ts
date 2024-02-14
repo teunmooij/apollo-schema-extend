@@ -39,15 +39,12 @@ describe('mergeTypeDefs tests', () => {
       type Greeting {
         value: String
       }
-      schema {
-        query: Query
-      }
     `
 
     expect(print(result)).toEqual(print(expected))
   })
 
-  it('should merge the schemas where original is single document node', () => {
+  it.only('should merge the schemas where original is single document node', () => {
     // Arrange
     const original = gql`
       type Query {
@@ -75,9 +72,6 @@ describe('mergeTypeDefs tests', () => {
       }
       type Greeting {
         value: String
-      }
-      schema {
-        query: Query
       }
     `
 

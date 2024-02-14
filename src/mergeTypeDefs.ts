@@ -1,5 +1,5 @@
 import { mergeTypeDefs as graphqlToolsMergeTypeDefs } from '@graphql-tools/merge'
-import { DocumentNode, GraphQLSchema, Kind, parse, printSchema } from 'graphql'
+import { DocumentNode, GraphQLSchema, Kind } from 'graphql'
 
 export const mergeTypeDefs = (
   original: string | DocumentNode | readonly (string | DocumentNode)[],
@@ -18,6 +18,11 @@ const apolloTypes = [
 const withoutApolloTypes = (typeDefs: DocumentNode): DocumentNode => ({
   ...typeDefs,
   definitions: typeDefs.definitions.filter(
-    definition => !apolloTypes.some(type => definition.kind === type.kind && definition.name.value === type.name)
+    definition =>
+      !apolloTypes.some(
+        type =>
+          definition.kind === Kind.SCHEMA_DEFINITION ||
+          (definition.kind === type.kind && definition.name.value === type.name)
+      )
   ),
 })
