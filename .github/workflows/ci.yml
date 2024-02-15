@@ -1,15 +1,37 @@
-name: CI Pipeline
+name: Build and publish
+
 on:
-  push: 
-    branches: 
-      - main
-  pull_request:
+  push:
     branches:
       - main
+
 jobs:
-  build:
+  build_and_publish:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Just see it run
-        run: echo Test test test
-  
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Audit check
+        run: npm audit --audit-level critical
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test:ci
+
+      - name: Build
+        run: npm run build
+      
+      - name: Authenticate for publishing
+        run: npm config set '//registry.npmjs.org/:_authToken' "${{ secrets.NPM_TOKEN }}"
+
+      - name: Publish
+        run: npm publish --access public

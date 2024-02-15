@@ -1,6 +1,6 @@
 {
   "name": "apollo-schema-extend",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Extends your Apollo Server Express based graphql server with an external graphql source",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -12,12 +12,7 @@
     "build": "rimraf lib && tsc",
     "format": "prettier --write \"src/**/*.ts\"",
     "lint": "tslint -p tsconfig.json",
-    "patch": "yarn version --patch",
-    "minor": "yarn version --minor",
-    "major": "yarn version --major",
-    "test:ci": "jest --config jest.config.json",
-    "prepublishOnly": "yarn test:ci & yarn lint",
-    "prepare": "yarn build"
+    "test:ci": "jest --config jest.config.json"
   },
   "repository": "https://github.com/teunmooij/apollo-schema-extend.git",
   "author": "Teun Mooij",

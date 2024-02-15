@@ -1,0 +1,7 @@
+src/
+.github/
+
+.prettierrc
+jest.config.json
+tsconfig.json
+tslint.json
